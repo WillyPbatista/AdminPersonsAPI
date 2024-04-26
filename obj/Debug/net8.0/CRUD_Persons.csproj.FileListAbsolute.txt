@@ -31,3 +31,7 @@ C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\obj\Debug\net8.0\refint\CR
 C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\obj\Debug\net8.0\CRUD_Persons.pdb
 C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\obj\Debug\net8.0\CRUD_Persons.genruntimeconfig.cache
 C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\obj\Debug\net8.0\ref\CRUD_Persons.dll
+C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\Willy\source\repos\CRUD_Persons\CRUD_Persons\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

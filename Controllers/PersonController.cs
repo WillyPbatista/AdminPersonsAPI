@@ -1,7 +1,10 @@
 ﻿using CRUD_Persons.Data;
 using CRUD_Persons.DTOs;
+using CRUD_Persons.Interfaces;
 using CRUD_Persons.Models;
+using CRUD_Persons.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRUD_Persons.Controllers
@@ -10,11 +13,21 @@ namespace CRUD_Persons.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
+        private readonly ILogger<PersonController> _logger;
+        private readonly IPersonService _personService;
+        public PersonController(ILogger<PersonController> logger, IPersonService personService)
+        {
+            _logger = logger;
+            _personService = personService;
+        }
+
+
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<PersonDTO>> GetPersons() 
             {
-                return Ok(VillaStore.PersonList);
+                return Ok(_personService.GetPersons());
             }
 
         [HttpGet("ID:int", Name = "GetPerson")]
@@ -24,12 +37,20 @@ namespace CRUD_Persons.Controllers
         public ActionResult<PersonDTO> GetPersonByID(int ID)
             {
             if (ID == 0)
+            {
+                _logger.LogError("The person's ID is 0");
                 return BadRequest();
+            }
 
-            var person = VillaStore.PersonList.FirstOrDefault(x => x.ID == ID);
+
+            var person = _personService.GetPersonByID(ID);
 
             if (person == null)
+            {
+                _logger.LogError("This person does'nt exist");
                 return NotFound();
+            }
+                
 
                 return Ok(person);
             }
@@ -54,37 +75,36 @@ namespace CRUD_Persons.Controllers
             }
 
             if (personDTO == null)
+            {
+                _logger.LogError("This person does'nt exist");
                 return BadRequest(personDTO);
+            }
+                
             
             if(personDTO.ID > 0)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            personDTO.ID = VillaStore.PersonList.OrderByDescending(x => x.ID).FirstOrDefault().ID + 1;
+            var newPerson = _personService.CreatePerson(personDTO);
 
-            VillaStore.PersonList.Add(personDTO);
-
-            return CreatedAtRoute("GetPerson", new { ID = personDTO.ID }, personDTO);
+            return CreatedAtRoute("GetPerson", new { ID = newPerson.ID }, newPerson);
         }
 
         [HttpDelete("{ID:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult DeletePerson(int ID)
         {
             if (ID <= 0)
-                return BadRequest();
-
-            var deletedPerson = VillaStore.PersonList.FirstOrDefault(x => x.ID == ID);
-
-            if (deletedPerson == null) 
             {
-                return NotFound(); 
+                _logger.LogError("This ID is ivalid because is a negative number");
+                return BadRequest();
             }
+                
 
-            VillaStore.PersonList.Remove(deletedPerson);
+             _personService.DeletePerson(ID);
+
             return NoContent();
 
         }
@@ -92,23 +112,31 @@ namespace CRUD_Persons.Controllers
         [HttpPut("{ID:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult UpdatePerson(int ID, [FromBody] PersonDTO personDTO)
         {
             if (ID != personDTO.ID || personDTO == null)
                 return BadRequest();
 
-            var updatedPerson = VillaStore.PersonList.FirstOrDefault(x => x.ID == ID);
-
-            if (updatedPerson == null)
-                return NotFound();
-
-            updatedPerson.Name = personDTO.Name;
-            updatedPerson.LastName = personDTO.LastName;
-            updatedPerson.Age = personDTO.Age;
+             _personService.UpdatePerson(ID, personDTO);
 
             return NoContent();
         }
 
+        [HttpPatch("{ID:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdatePartialPropertiesPerson(int ID, JsonPatchDocument<PersonDTO> patchPersonDTO)
+        {
+            if (ID == 0|| patchPersonDTO == null)
+                return BadRequest();
+
+            _personService.UpdatePartialPropertiesPerson(ID,patchPersonDTO);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return NoContent();
+        }
     }
 }
