@@ -61,22 +61,17 @@ namespace CRUD_Persons.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<PersonDTO> CreatePerson([FromBody] PersonDTO personDTO)
         {
+            var newPerson = _personService.CreatePerson(personDTO);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-             
-            if(VillaStore.PersonList.FirstOrDefault(x => x.Name.ToLower() == personDTO.Name.ToLower()) != null 
-                && 
-               VillaStore.PersonList.FirstOrDefault(x => x.LastName.ToLower() == personDTO.LastName.ToLower()) != null)
-            {
-                ModelState.AddModelError("existPerson", "This Person already exist");
-                return BadRequest(ModelState);
-            }
+
+    
 
             if (personDTO == null)
             {
-                _logger.LogError("This person does'nt exist");
                 return BadRequest(personDTO);
             }
                 
@@ -86,7 +81,7 @@ namespace CRUD_Persons.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            var newPerson = _personService.CreatePerson(personDTO);
+           
 
             return CreatedAtRoute("GetPerson", new { ID = newPerson.ID }, newPerson);
         }
