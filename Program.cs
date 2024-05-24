@@ -1,8 +1,10 @@
+using CRUD_Persons;
 using CRUD_Persons.Data;
 using CRUD_Persons.Interfaces;
 using CRUD_Persons.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+
 
 // Dentro de ConfigureServices
 
@@ -30,6 +32,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 var app = builder.Build();
 

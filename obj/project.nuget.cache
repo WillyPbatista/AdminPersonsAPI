@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "gazykcR/ZPE7wf6g0a+Qo80Yun9NqWCxgmMDZJUdIDpjJuQJYHzojliI+madL54O+mB5EQT/8ETyF9uLuRAcQg==",
+  "dgSpecHash": "lMcRmCsuIdhss+hP3BhHF6gfBVAJ2paE9N2pL0tNrr++qGilJTfLduLjLWW96gdu5lAuM7xMThg3W8hhQ0YF6Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\Willy\\source\\repos\\CRUD_Persons\\CRUD_Persons\\CRUD_Persons.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Willy\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Willy\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Willy\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\Willy\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
@@ -91,5 +92,12 @@
     "C:\\Users\\Willy\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\Willy\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error al obtener los datos de vulnerabilidad del paquete: Error al enviar la solicitud."
+    }
+  ]
 }
