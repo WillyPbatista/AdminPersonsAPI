@@ -27,6 +27,8 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped<IPersonService, PersonService>();
+
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
